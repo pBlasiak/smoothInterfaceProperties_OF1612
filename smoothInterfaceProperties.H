@@ -74,9 +74,9 @@ class smoothInterfaceProperties
 
         //- Stabilisation for normalisation of the interface normal
         const dimensionedScalar deltaN_;
-        volScalarField smoothAlpha_;
 
         const volScalarField& alpha1_;
+        volScalarField smoothAlpha_;
         const volVectorField& U_;
         surfaceScalarField nHatf_;
         volScalarField K_;

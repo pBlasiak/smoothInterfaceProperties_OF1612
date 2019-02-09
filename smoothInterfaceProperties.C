@@ -112,13 +112,10 @@ void Foam::smoothInterfaceProperties::calculateK()
     const fvMesh& mesh = alpha1_.mesh();
     const surfaceVectorField& Sf = mesh.Sf();
 
-    smoothAlpha_ = alpha1_;
-
-    for (int i = 0; i < smoothItr_; ++i) {
-
+    for (int i = 0; i < smoothItr_; ++i) 
+	{
     	//Lafaurie smooth function
-    	//smoothAlpha = fvc::surfaceSum(fvc::interpolate(smoothAlpha))/fvc::surfaceSum(onef_);
-        smoothAlpha_ = fvc::average(fvc::interpolate(smoothAlpha_));
+        smoothAlpha_ = fvc::average(fvc::interpolate(alpha1_));
 	}
 
 
@@ -211,8 +208,20 @@ Foam::smoothInterfaceProperties::smoothInterfaceProperties
         1e-8/pow(average(alpha1.mesh().V()), 1.0/3.0)
     ),
 
-    smoothAlpha_(alpha1),
     alpha1_(alpha1),
+    smoothAlpha_
+    (
+        IOobject
+        (
+            "smoothAlpha",
+            alpha1_.time().timeName(),
+            alpha1_.mesh(),
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        alpha1_.mesh(),
+        dimensionedScalar("smoothAlpha", dimless, 0.0)
+    ),
     U_(U),
 
     nHatf_
